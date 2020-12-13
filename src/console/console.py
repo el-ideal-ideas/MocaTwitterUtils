@@ -221,6 +221,28 @@ def update_tweets() -> None:
             mzk.sleep(10)
         except CalledProcessError:
             mzk.tsecho(f"Update tweets failed -- {screen_name}", fg=mzk.tcolors.RED)
+            
+            
+@console.command('save-tweets-to-file')
+def save_tweets_to_file(screen_name: str, filename: str) -> None:
+    """Get all tweets from database and save to a file."""
+    core.cursor.execute(
+        core.SCREEN_NAME_TO_ID_QUERY,
+        (screen_name,)
+    )
+    res = core.cursor.fetchall()[0]
+    if len(res) > 0:
+        core.cursor.execute(
+            core.GET_TWEETS_QUERY,
+            (res[0],)
+        )
+        res = core.cursor.fetchall()
+        with open(filename, mode='w') as file:
+            for item in res:
+                file.write(item[2])
+                file.write('\n')
+    else:
+        mzk.tsecho(f"Unknown screen_name", fg=mzk.tcolors.RED)
 
 
 # -------------------------------------------------------------------------- Console --

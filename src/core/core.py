@@ -59,5 +59,8 @@ GET_TWEETS_QUERY = mzk.get_str_from_file(Path(__file__).parent.joinpath('get_twe
 COUNT_TWEETS_QUERY = mzk.get_str_from_file(Path(__file__).parent.joinpath('count_tweets.sql')).replace(
     '[el]#moca_prefix#', DB_CONFIG['mysql']['prefix']
 )
+SCREEN_NAME_TO_ID_QUERY = mzk.get_str_from_file(Path(__file__).parent.joinpath('screen_name_to_id.sql')).replace(
+    '[el]#moca_prefix#', DB_CONFIG['mysql']['prefix']
+)
 
 # -------------------------------------------------------------------------- Variables --

@@ -5,7 +5,8 @@ from warnings import catch_warnings, simplefilter
 from .core import (
     VERSION, TOP_DIR, CONFIG_DIR, LOG_DIR, SRC_DIR, STORAGE_DIR, SYSTEM_CONFIG, SANIC_CONFIG, SERVER_CONFIG,
     IP_BLACKLIST_FILE, API_KEY_FILE, system_config, ip_blacklist, TWITTER_CONFIG, moca_twitter, DB_CONFIG,
-    INSERT_TWEET_QUERY, ADD_USER_QUERY, UPDATE_USER_QUERY, GET_TWEETS_QUERY, COUNT_TWEETS_QUERY
+    INSERT_TWEET_QUERY, ADD_USER_QUERY, UPDATE_USER_QUERY, GET_TWEETS_QUERY, COUNT_TWEETS_QUERY,
+    SCREEN_NAME_TO_ID_QUERY
 )
 from .db import redis, mysql, cursor
 from .. import moca_modules as mzk

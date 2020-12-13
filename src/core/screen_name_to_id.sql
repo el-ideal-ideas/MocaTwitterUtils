@@ -1,0 +1,1 @@
+select user_id from `[el]#moca_prefix#users` where screen_name = %s limit 1;
