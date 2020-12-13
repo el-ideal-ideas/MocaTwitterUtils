@@ -1,0 +1,1 @@
+select count(1) from `[el]#moca_prefix#tweets` where user_id = %s;

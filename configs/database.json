@@ -1,0 +1,26 @@
+{
+  "mysql": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "password": "mochimochi",
+    "database": "moca_system",
+    "prefix": "moca_tw_",
+    "force_sync": false,
+    "min_size": 1,
+    "max_size": 10
+  },
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379,
+    "password": "",
+    "db": 1,
+    "prefix": "moca-tw-",
+    "min_size": 1,
+    "max_size": 10
+  },
+  "simple_cache": {
+    "pool_size": 50000,
+    "page_size": 2000
+  }
+}
