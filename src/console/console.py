@@ -205,8 +205,7 @@ def save_tweets(screen_name: str) -> None:
                  user_id,
                  data['text'],
                  data['created_at'],
-                 data['source'].split('>')[1].split('<')[0],
-                 data['id'])
+                 data['source'].split('>')[1].split('<')[0])
             )
         except IntegrityError:
             pass
