@@ -247,7 +247,7 @@ def save_tweets_to_file(screen_name: str, filename: str) -> None:
         mzk.tsecho(f"Unknown screen_name", fg=mzk.tcolors.RED)
 
 
-@console.command('--keep-update-tweets', hidden=True)
+@console.command('__keep-update-tweets', hidden=True)
 def __keep_update_tweets(interval: int) -> None:
     """run update-tweets command with interval on background."""
     mzk.set_process_name('MocaTwitterUtils -- keep-update-tweets')
@@ -262,7 +262,7 @@ def __keep_update_tweets(interval: int) -> None:
 def keep_update_tweets(interval: int) -> None:
     """run update-tweets command with interval on background."""
     mzk.call(
-        f'nohup {mzk.executable} "{core.TOP_DIR.joinpath("moca.py")}" --keep-update-tweets {interval} &> /dev/null &', shell=True
+        f'nohup {mzk.executable} "{core.TOP_DIR.joinpath("moca.py")}" __keep-update-tweets {interval} &> /dev/null &', shell=True
     )
 
 # -------------------------------------------------------------------------- Console --
