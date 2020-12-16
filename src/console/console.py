@@ -198,15 +198,18 @@ def save_tweets(screen_name: str) -> None:
             screen_name, count=200, exclude_replies=False, include_rts=True, include_entities=True
     ):
         data = tweet._json
-        core.cursor.execute(
-            core.INSERT_TWEET_QUERY,
-            (data['id'],
-             user_id,
-             data['text'],
-             data['created_at'],
-             data['source'].split('>')[1].split('<')[0],
-             data['id'])
-        )
+        try:
+            core.cursor.execute(
+                core.INSERT_TWEET_QUERY,
+                (data['id'],
+                 user_id,
+                 data['text'],
+                 data['created_at'],
+                 data['source'].split('>')[1].split('<')[0],
+                 data['id'])
+            )
+        except IntegrityError:
+            pass
     core.mysql.commit()
 
 

@@ -138,15 +138,18 @@ async def __save_user_timeline(request: Request, screen_name: str) -> None:
                     screen_name, count=200, exclude_replies=False, include_rts=True, include_entities=True
             ):
                 data = tweet._json
-                await cur.execute(
-                    core.INSERT_TWEET_QUERY,
-                    (data['id'],
-                     user_id,
-                     data['text'],
-                     data['created_at'],
-                     data['source'].split('>')[1].split('<')[0],
-                     data['id'])
-                )
+                try:
+                    await cur.execute(
+                        core.INSERT_TWEET_QUERY,
+                        (data['id'],
+                         user_id,
+                         data['text'],
+                         data['created_at'],
+                         data['source'].split('>')[1].split('<')[0],
+                         data['id'])
+                    )
+                except IntegrityError:
+                    pass
         await con.commit()
 
 
