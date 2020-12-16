@@ -216,8 +216,8 @@ def update_tweets() -> None:
     screen_name_list = mzk.load_json_from_file(core.CONFIG_DIR.joinpath('screen_name.json'))
     for screen_name in screen_name_list:
         try:
-            mzk.tsecho(f"Update tweets successfully -- {screen_name}", fg=mzk.tcolors.GREEN)
             mzk.call(f'{mzk.executable} "{core.TOP_DIR.joinpath("moca.py")}" save-tweets {screen_name}', shell=True)
+            mzk.tsecho(f"Update tweets successfully -- {screen_name}", fg=mzk.tcolors.GREEN)
             mzk.sleep(10)
         except CalledProcessError:
             mzk.tsecho(f"Update tweets failed -- {screen_name}", fg=mzk.tcolors.RED)
