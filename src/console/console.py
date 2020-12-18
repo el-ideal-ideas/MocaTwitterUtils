@@ -250,7 +250,7 @@ def save_tweets_to_file(screen_name: str, filename: str) -> None:
 @console.command('__keep-update-tweets', hidden=True)
 def __keep_update_tweets(interval: int) -> None:
     """run update-tweets command with interval on background."""
-    mzk.set_process_name('MocaTwitterUtils -- keep-update-tweets')
+    mzk.set_process_name(f'MocaTwitterUtils({core.VERSION}) -- keep-update-tweets')
     while True:
         mzk.call(
             f'nohup {mzk.executable} "{core.TOP_DIR.joinpath("moca.py")}" update-tweets &> /dev/null &', shell=True
