@@ -1,8 +1,5 @@
 # -- Imports --------------------------------------------------------------------------
 
-from typing import (
-    Tuple
-)
 from sanic import Blueprint
 from sanic.request import Request
 from sanic.response import HTTPResponse, text, json as original_json, file
@@ -12,6 +9,7 @@ json = partial(original_json, dumps=orjson_dumps)
 from sanic.exceptions import Forbidden, ServerError
 from time import time
 from pymysql import IntegrityError, MySQLError
+from dateutil.parser import parse
 from ... import moca_modules as mzk
 from ... import core
 from .utils import check_root_pass
@@ -296,6 +294,24 @@ async def get_tweets(request: Request) -> HTTPResponse:
         await request.app.mysql.execute_aio(core.GET_TWEETS_QUERY, (info.get('id', 0),))
     )
 
+
+@root.route('/get-latest-tweets', {'GET', 'POST', 'OPTIONS'})
+async def get_latest_tweets(request: Request) -> HTTPResponse:
+    screen_name, *_ = mzk.get_args(
+        request,
+        ('screen_name|name', str, None, {'max_length': 32}),
+    )
+    if screen_name is None:
+        raise Forbidden('screen_name parameter format error.')
+    info = await __get_info(request, screen_name)
+    res = await request.app.mysql.execute_aio(core.GET_TWEETS_QUERY, (info.get('id', 0),))
+    if len(res) > 0 and len(res[0]) > 0:
+        data = list(res)
+        data.sort(key=lambda x: parse(x[3]), reverse=True)
+        return json(data)
+    else:
+        return json([])
+        
 
 @root.route('/check-saved-tweets-count', {'GET', 'POST', 'OPTIONS'})
 async def check_saved_tweets_count(request: Request) -> HTTPResponse:

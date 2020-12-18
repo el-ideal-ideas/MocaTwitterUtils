@@ -5,4 +5,4 @@ create table if not exists `%stweets` (
     created_at varchar(256) not null,
     source varchar(256) default null,
     foreign key (user_id) references `%susers` (user_id)
-)engine=innodb  default charset=utf8mb4;
+)engine=innodb default charset=utf8mb4;
