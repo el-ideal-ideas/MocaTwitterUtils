@@ -297,9 +297,9 @@ async def get_tweets(request: Request) -> HTTPResponse:
 
 @root.route('/get-latest-tweets', {'GET', 'POST', 'OPTIONS'})
 async def get_latest_tweets(request: Request) -> HTTPResponse:
-    screen_name, *_ = mzk.get_args(
+    screen_name, limit = mzk.get_args(
         request,
-        ('screen_name|name', str, None, {'max_length': 32}),
+        ('screen_name|name', str, None, {'max_length': 32})
     )
     if screen_name is None:
         raise Forbidden('screen_name parameter format error.')
@@ -308,7 +308,7 @@ async def get_latest_tweets(request: Request) -> HTTPResponse:
     if len(res) > 0 and len(res[0]) > 0:
         data = list(res)
         data.sort(key=lambda x: parse(x[3]), reverse=True)
-        return json(data)
+        return json(data[:8192])
     else:
         return json([])
         
