@@ -297,7 +297,7 @@ async def get_tweets(request: Request) -> HTTPResponse:
 
 @root.route('/get-latest-tweets', {'GET', 'POST', 'OPTIONS'})
 async def get_latest_tweets(request: Request) -> HTTPResponse:
-    screen_name, limit = mzk.get_args(
+    screen_name, *_ = mzk.get_args(
         request,
         ('screen_name|name', str, None, {'max_length': 32})
     )
