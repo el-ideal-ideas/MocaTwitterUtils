@@ -16,6 +16,7 @@ async def force_headers(request: Request):
     if not request.raw_url.startswith(b'/static') and \
             not request.raw_url.startswith(b'/web') and \
             not request.raw_url.startswith(b'/status') and \
+            not request.raw_url.startswith(b'/static/icons/') and \
             request.method.upper() != 'OPTIONS':
         headers = request.app.system_config.get_config('force_headers', dict, {})
         if len(headers) != 0:
