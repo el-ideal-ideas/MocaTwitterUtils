@@ -161,6 +161,7 @@ def save_tweets(screen_name: str) -> None:
     """Save latest tweets to database."""
     info = core.moca_twitter.get_user_info(screen_name)
     user_id = info.get('id', 0)
+    mzk.pp(info)
     try:
         core.cursor.execute(
             core.ADD_USER_QUERY,
@@ -178,6 +179,7 @@ def save_tweets(screen_name: str) -> None:
             ),
         )
     except IntegrityError:
+        raise
         core.cursor.execute(
             core.UPDATE_USER_QUERY,
             (
@@ -220,7 +222,7 @@ def update_tweets() -> None:
         try:
             mzk.call(f'{mzk.executable} "{core.TOP_DIR.joinpath("moca.py")}" save-tweets {screen_name}', shell=True)
             mzk.tsecho(f"Update tweets successfully -- {screen_name}", fg=mzk.tcolors.GREEN)
-            mzk.sleep(10)
+            mzk.sleep(30)
         except CalledProcessError:
             mzk.tsecho(f"Update tweets failed -- {screen_name}", fg=mzk.tcolors.RED)
             
