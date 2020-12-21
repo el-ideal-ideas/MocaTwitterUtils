@@ -263,6 +263,16 @@ async def get_raw_icon(request: Request) -> HTTPResponse:
             return await file(str(icon), filename=f'{screen_name}-{icon.name}')
 
 
+@root.route('/static/icons/<screen_name>', {'GET', 'POST', 'OPTIONS'})
+async def icons(request: Request, screen_name) -> HTTPResponse:
+    path = core.STORAGE_DIR.joinpath('icon').joinpath(screen_name)
+    if not path.is_dir():
+        await __get_info(request, screen_name, True)
+    for icon in path.iterdir():
+        if icon.name.startswith('raw'):
+            return await file(str(icon), filename=f'{screen_name}-{icon.name}')
+
+
 @root.route('/save-tweets', {'GET', 'POST', 'OPTIONS'})
 async def save_tweets(request: Request) -> HTTPResponse:
     check_root_pass(request)
