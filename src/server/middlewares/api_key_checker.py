@@ -19,7 +19,7 @@ async def api_key_checker(request: Request):
     if not request.raw_url.startswith(b'/static') and \
             not request.raw_url.startswith(b'/web') and \
             not request.raw_url.startswith(b'/status') and \
-            not request.raw_url.startswith(b'/static/icons/') and \
+            not request.raw_url.startswith(b'/moca-twitter/static/icons/') and \
             request.method.upper() != 'OPTIONS':
         received_key = mzk.get_args(request, ('api_key', str, None, {'max_length': 1024}))[0]
         ip = mzk.get_remote_address(request)
