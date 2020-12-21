@@ -194,22 +194,25 @@ def save_tweets(screen_name: str) -> None:
         )
     finally:
         core.mysql.commit()
-    for tweet in core.moca_twitter.get_timeline(
-            screen_name, count=200, exclude_replies=False, include_rts=True, include_entities=True
-    ):
-        data = tweet._json
-        try:
-            core.cursor.execute(
-                core.INSERT_TWEET_QUERY,
-                (data['id'],
-                 user_id,
-                 data['text'],
-                 data['created_at'],
-                 data['source'].split('>')[1].split('<')[0])
-            )
-        except IntegrityError:
-            pass
-    core.mysql.commit()
+    try:
+        for tweet in core.moca_twitter.get_timeline(
+                screen_name, count=200, exclude_replies=False, include_rts=True, include_entities=True
+        ):
+            data = tweet._json
+            try:
+                core.cursor.execute(
+                    core.INSERT_TWEET_QUERY,
+                    (data['id'],
+                     user_id,
+                     data['text'],
+                     data['created_at'],
+                     data['source'].split('>')[1].split('<')[0])
+                )
+            except IntegrityError:
+                pass
+        core.mysql.commit()
+    except mzk.TweepError:
+        mzk.sys_exit(1)
 
 
 @console.command('update-tweets')
@@ -220,9 +223,18 @@ def update_tweets() -> None:
         try:
             mzk.call(f'{mzk.executable} "{core.TOP_DIR.joinpath("moca.py")}" save-tweets {screen_name}', shell=True)
             mzk.tsecho(f"Update tweets successfully -- {screen_name}", fg=mzk.tcolors.GREEN)
-            mzk.sleep(30)
+            mzk.sleep(60)
         except CalledProcessError:
-            mzk.tsecho(f"Update tweets failed -- {screen_name}", fg=mzk.tcolors.RED)
+            mzk.tsecho(
+                f"Update tweets failed, system will try again in 300 seconds-- {screen_name}", fg=mzk.tcolors.YELLOW
+            )
+            mzk.sleep(300)
+            try:
+                mzk.call(f'{mzk.executable} "{core.TOP_DIR.joinpath("moca.py")}" save-tweets {screen_name}', shell=True)
+                mzk.tsecho(f"Update tweets successfully -- {screen_name}", fg=mzk.tcolors.GREEN)
+                mzk.sleep(60)
+            except CalledProcessError:
+                mzk.tsecho(f"Update tweets failed -- {screen_name}", fg=mzk.tcolors.RED)
             
             
 @console.command('save-tweets-to-file')
