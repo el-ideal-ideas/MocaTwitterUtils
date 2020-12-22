@@ -274,7 +274,8 @@ def __keep_update_tweets(interval: int) -> None:
 def keep_update_tweets(interval: int) -> None:
     """run update-tweets command with interval on background."""
     mzk.call(
-        f'nohup {mzk.executable} "{core.TOP_DIR.joinpath("moca.py")}" __keep-update-tweets {interval} &> /dev/null &', shell=True
+        f'nohup {mzk.executable} "{core.TOP_DIR.joinpath("moca.py")}" __keep-update-tweets {interval} &> /dev/null &',
+        shell=True
     )
 
 # -------------------------------------------------------------------------- Console --
