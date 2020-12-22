@@ -178,6 +178,7 @@ def save_tweets(screen_name: str) -> None:
             ),
         )
     except IntegrityError:
+        raise
         core.cursor.execute(
             core.UPDATE_USER_QUERY,
             (
