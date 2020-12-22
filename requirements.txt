@@ -56,4 +56,4 @@ janome
 Pillow
 limits
 js2py
-dateutil
+python-dateutil
