@@ -1,1 +1,1 @@
-select tweet_id, user_id, text, created_at, source from `[el]#moca_prefix#tweets` where user_id = %s;
+select SQL_NO_CACHE tweet_id, user_id, text, created_at, source from `[el]#moca_prefix#tweets` where user_id = %s;
